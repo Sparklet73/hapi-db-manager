@@ -963,4 +963,18 @@ dbManagerAppController.controller('MainController', ($rootScope, $scope, $http, 
 
     };
 
+    /**
+    * Logout
+    */
+    $scope.logout = () => {
+
+        $http({
+            method: 'GET',
+            url: $scope.basePath + '/logout'
+        }).then(() => {
+
+            window.location = $scope.basePath;
+        });
+    };
+
 });

@@ -9,3 +9,7 @@ before_script:
   - psql -c 'create database hapi_db_manager_testing;' -U postgres
 after_success:
   - "npm run test-cov-coveralls"
+branches:
+  only:
+  - master
+  - develop

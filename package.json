@@ -28,7 +28,10 @@
   },
   "homepage": "https://github.com/starlightslo/hapi-db-manager#readme",
   "dependencies": {
+    "bcrypt-nodejs": "^0.0.3",
+    "crypto": "^0.0.3",
     "ejs": "^2.5.5",
+    "hapi-auth-cookie": "^7.0.0",
     "hoek": "^4.1.0",
     "joi": "^10.1.0"
   },

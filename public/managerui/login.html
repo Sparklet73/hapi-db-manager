@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Login page">
+    <meta name="author" content="Zinia Lin(Sparklet73)">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+        crossorigin="anonymous">
+
+    <!-- JQuery Library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <!-- Tether Library -->
+    <script src="https://unpkg.com/tether@1.4.0/dist/js/tether.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
+    <title>Database Manager</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="col-md-4 col-md-offset-12">
+            <form method="post" name="Login_Form">
+                <h3>Please Sign In</h3>
+                <div class="form-group">
+                    <span style="color:crimson"><%= formMessage %></span>
+                    <input type="password" name="password" id="password" placeholder="Password" class="form-control" required />
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
