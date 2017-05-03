@@ -18,15 +18,14 @@ const Proxyquire = require('proxyquire');
 const hapiAuthCookieStub = {
     register: (server, options, next) => {
 
-        next('register');
+        next('loading plugins failed');
     }
 };
 hapiAuthCookieStub.register.attributes = {
     name: 'test'
 };
 const HapiDBManagerStub = Proxyquire('../../lib/index.js', { 'hapi-auth-cookie': hapiAuthCookieStub });
-const rHelper = Proxyquire('../helper.js', { '../lib/index.js': HapiDBManagerStub });
-
+const failedHelper = Proxyquire('../helper.js', { '../lib/index.js': HapiDBManagerStub });
 
 const DBPath = './test.sqlite3';
 const SQLiteDBConfig = {
@@ -50,6 +49,10 @@ const PGDBConfig = {
         max: 10
     }
 };
+const configPassword = 'configPassword';
+const managerPath = '/dbadmin';
+const loginPath = managerPath + '/login';
+const logoutPath = managerPath + '/logout';
 
 describe('Auth', () => {
 
@@ -61,11 +64,11 @@ describe('Auth', () => {
 
     it('loading plugin failed', (done) => {
 
-        rHelper.createServer({
+        failedHelper.createServer({
             databaseConfigList: [SQLiteDBConfig, PGDBConfig]
         }, (err, server) => {
 
-            expect(err).not.to.equal(200);
+            expect(err).to.exist();
             done();
         });
     });
@@ -74,11 +77,11 @@ describe('Auth', () => {
 
         Helper.createServer({
             databaseConfigList: [SQLiteDBConfig, PGDBConfig],
-            password: 'testtest'
+            password: configPassword
         }, (err, server) => {
 
             expect(err).to.equal(null);
-            server.inject({ method: 'GET', url: '/dbadmin/login' }, (response) => {
+            server.inject({ method: 'GET', url: loginPath }, (response) => {
 
                 expect(response.statusCode).to.equal(200);
                 done();
@@ -89,19 +92,19 @@ describe('Auth', () => {
     it('login with correct password', (done) => {
 
         const payload = {
-            password: 'testtest'
+            password: configPassword
         };
 
         Helper.createServer({
             databaseConfigList: [SQLiteDBConfig, PGDBConfig],
-            password: 'testtest'
+            password: configPassword
         }, (err, server) => {
 
             expect(err).to.equal(null);
-            server.inject({ method: 'POST', url: '/dbadmin/login', payload }, (response) => {
+            server.inject({ method: 'POST', url: loginPath, payload }, (response) => {
 
                 expect(response.statusCode).to.equal(302);
-                expect(response.headers.location).to.equal('/dbadmin');
+                expect(response.headers.location).to.equal(managerPath);
                 done();
             });
         });
@@ -115,11 +118,11 @@ describe('Auth', () => {
 
         Helper.createServer({
             databaseConfigList: [SQLiteDBConfig, PGDBConfig],
-            password: 'testtest'
+            password: configPassword
         }, (err, server) => {
 
             expect(err).to.equal(null);
-            server.inject({ method: 'POST', url: '/dbadmin/login', payload }, (response) => {
+            server.inject({ method: 'POST', url: loginPath, payload }, (response) => {
 
                 expect(response.statusCode).to.equal(200);
                 done();
@@ -130,23 +133,23 @@ describe('Auth', () => {
     it('logout', (done) => {
 
         const payload = {
-            password: 'testtest'
+            password: configPassword
         };
 
         Helper.createServer({
             databaseConfigList: [SQLiteDBConfig, PGDBConfig],
-            password: 'testtest'
+            password: configPassword
         }, (err, server) => {
 
             expect(err).to.equal(null);
-            server.inject({ method: 'POST', url: '/dbadmin/login', payload }, (response) => {
+            server.inject({ method: 'POST', url: loginPath, payload }, (response) => {
 
                 expect(response.statusCode).to.equal(302);
-                expect(response.headers.location).to.equal('/dbadmin');
-                server.inject({ method: 'GET', url: '/dbadmin/logout' }, (res) => {
+                expect(response.headers.location).to.equal(managerPath);
+                server.inject({ method: 'GET', url: logoutPath }, (res) => {
 
                     expect(res.statusCode).to.equal(302);
-                    expect(response.headers.location).to.equal('/dbadmin');
+                    expect(response.headers.location).to.equal(managerPath);
 
                     done();
                 });
