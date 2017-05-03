@@ -124,6 +124,7 @@ describe('Auth', () => {
             expect(err).to.equal(null);
             server.inject({ method: 'POST', url: loginPath, payload }, (response) => {
 
+                // Because wrong password inserted, will not be redirected to db manager page.
                 expect(response.statusCode).to.equal(200);
                 done();
             });
