@@ -49,7 +49,7 @@ const PGDBConfig = {
         max: 10
     }
 };
-const configPassword = 'configPassword';
+const PASSWORD = 'PASSWORD';
 const managerPath = '/dbadmin';
 const loginPath = managerPath + '/login';
 const logoutPath = managerPath + '/logout';
@@ -77,7 +77,7 @@ describe('Auth', () => {
 
         Helper.createServer({
             databaseConfigList: [SQLiteDBConfig, PGDBConfig],
-            password: configPassword
+            password: PASSWORD
         }, (err, server) => {
 
             expect(err).to.equal(null);
@@ -92,12 +92,12 @@ describe('Auth', () => {
     it('login with correct password', (done) => {
 
         const payload = {
-            password: configPassword
+            password: PASSWORD
         };
 
         Helper.createServer({
             databaseConfigList: [SQLiteDBConfig, PGDBConfig],
-            password: configPassword
+            password: PASSWORD
         }, (err, server) => {
 
             expect(err).to.equal(null);
@@ -118,7 +118,7 @@ describe('Auth', () => {
 
         Helper.createServer({
             databaseConfigList: [SQLiteDBConfig, PGDBConfig],
-            password: configPassword
+            password: PASSWORD
         }, (err, server) => {
 
             expect(err).to.equal(null);
@@ -133,12 +133,12 @@ describe('Auth', () => {
     it('logout', (done) => {
 
         const payload = {
-            password: configPassword
+            password: PASSWORD
         };
 
         Helper.createServer({
             databaseConfigList: [SQLiteDBConfig, PGDBConfig],
-            password: configPassword
+            password: PASSWORD
         }, (err, server) => {
 
             expect(err).to.equal(null);
@@ -149,7 +149,7 @@ describe('Auth', () => {
                 server.inject({ method: 'GET', url: logoutPath }, (res) => {
 
                     expect(res.statusCode).to.equal(302);
-                    expect(response.headers.location).to.equal(managerPath);
+                    expect(res.headers.location).to.equal(loginPath);
 
                     done();
                 });
