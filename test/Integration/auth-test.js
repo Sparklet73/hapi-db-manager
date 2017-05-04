@@ -50,9 +50,9 @@ const PGDBConfig = {
     }
 };
 const PASSWORD = 'PASSWORD';
-const managerPath = '/dbadmin';
-const loginPath = managerPath + '/login';
-const logoutPath = managerPath + '/logout';
+const MANAGER_PATH = '/dbadmin';
+const LOGIN_PATH = MANAGER_PATH + '/login';
+const LOGOUT_PATH = MANAGER_PATH + '/logout';
 
 describe('Auth', () => {
 
@@ -80,8 +80,8 @@ describe('Auth', () => {
             password: PASSWORD
         }, (err, server) => {
 
-            expect(err).to.equal(null);
-            server.inject({ method: 'GET', url: loginPath }, (response) => {
+            expect(err).not.to.exist();
+            server.inject({ method: 'GET', url: LOGIN_PATH }, (response) => {
 
                 expect(response.statusCode).to.equal(200);
                 done();
@@ -100,11 +100,11 @@ describe('Auth', () => {
             password: PASSWORD
         }, (err, server) => {
 
-            expect(err).to.equal(null);
-            server.inject({ method: 'POST', url: loginPath, payload }, (response) => {
+            expect(err).not.to.exist();
+            server.inject({ method: 'POST', url: LOGIN_PATH, payload }, (response) => {
 
                 expect(response.statusCode).to.equal(302);
-                expect(response.headers.location).to.equal(managerPath);
+                expect(response.headers.location).to.equal(MANAGER_PATH);
                 done();
             });
         });
@@ -121,8 +121,8 @@ describe('Auth', () => {
             password: PASSWORD
         }, (err, server) => {
 
-            expect(err).to.equal(null);
-            server.inject({ method: 'POST', url: loginPath, payload }, (response) => {
+            expect(err).not.to.exist();
+            server.inject({ method: 'POST', url: LOGIN_PATH, payload }, (response) => {
 
                 // Because wrong password inserted, will not be redirected to db manager page.
                 expect(response.statusCode).to.equal(200);
@@ -142,15 +142,15 @@ describe('Auth', () => {
             password: PASSWORD
         }, (err, server) => {
 
-            expect(err).to.equal(null);
-            server.inject({ method: 'POST', url: loginPath, payload }, (response) => {
+            expect(err).not.to.exist();
+            server.inject({ method: 'POST', url: LOGIN_PATH, payload }, (response) => {
 
                 expect(response.statusCode).to.equal(302);
-                expect(response.headers.location).to.equal(managerPath);
-                server.inject({ method: 'GET', url: logoutPath }, (res) => {
+                expect(response.headers.location).to.equal(MANAGER_PATH);
+                server.inject({ method: 'GET', url: LOGOUT_PATH }, (res) => {
 
                     expect(res.statusCode).to.equal(302);
-                    expect(res.headers.location).to.equal(loginPath);
+                    expect(res.headers.location).to.equal(LOGIN_PATH);
 
                     done();
                 });
